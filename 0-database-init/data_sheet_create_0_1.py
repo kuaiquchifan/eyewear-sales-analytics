@@ -14,19 +14,19 @@ class CustomerInfo(Base):
     customer_name = Column(String(100), comment="客户名称")
     gender = Column(String(10), comment="性别")
     age = Column(Integer, comment="年龄")
-    birth_date = Column(Date, comment="出生日期") 
+    birth_date = Column(Date, comment="出生日期")                    
     region = Column(String(50), comment="地区")
-    country = Column(String(50), comment="国家")
-    city = Column(String(50), comment="城市")
+    country = Column(String(50), comment="国家")                
+    city = Column(String(50), comment="城市")                  
     registration_date = Column(Date, comment="注册时间")
-    last_purchase_date = Column(Date, comment="最后购买时间")
-    total_orders = Column(Integer, default=0, comment="累计订单数")
-    total_spend = Column(Numeric(12, 2), default=0, comment="累计消费")
-    customer_type = Column(String(10), comment="客户类型（B2B/B2C/Professional）")
+    last_purchase_date = Column(Date, comment="最后购买时间")            
+    total_orders = Column(Integer, default=0, comment="累计订单数")    
+    total_spend = Column(Numeric(12, 2), default=0, comment="累计消费")  
+    customer_type = Column(String(50), comment="客户类型（B2B/B2C/Professional）")
     customer_hierarchy = Column(String(20), comment="客户层级（T1、T2、T3）")
     channel_source = Column(String(20), comment="渠道来源（广告、自然、线下等）")
-    preferred_store_id = Column(Integer, ForeignKey('StoreInfo.store_id'), comment="关联门店")
-    is_active = Column(Boolean, default=True, comment="是否活跃客户")
+    preferred_store_id = Column(Integer, ForeignKey('StoreInfo.store_id'), comment="关联门店")         
+    is_active = Column(Boolean, default=True, comment="是否活跃客户")   
     preferred_store = relationship("StoreInfo")
     
     
@@ -44,15 +44,15 @@ class ProductInfo(Base):
     product_type = Column(String(20), comment="产品类型（Prescription / Non-prescription）")  
     lens_brand = Column(String(20),comment="镜片品牌（Essilor, Ray-Ban 等）")  
     lens_color = Column(String(20),comment="镜片颜色（Clear, Blue 等）") 
-    lens_type = Column(String(50), comment="镜片类型（Single Vision, Progressive, Blue Light, Photochromic...）")
-    lens_thickness = Column(String(10),comment="镜片厚度（1.5, 1.56, 1.61, 1.67, 1.74 等）")
+    lens_type = Column(String(50), comment="镜片类型（Single Vision, Progressive, Blue Light, Photochromic...）")               
+    lens_thickness = Column(String(10),comment="镜片厚度（1.5, 1.56, 1.61, 1.67, 1.74 等）")              
     frame_gender = Column(String(10),comment="镜架性别（Men / Women / Unisex）")
-    frame_material = Column(String(30), comment="镜架材质（Acetate, Titanium, TR90, Metal...）")
-    frame_size = Column(String(20), comment="镜架尺寸（50-20-140 等）")
+    frame_material = Column(String(30), comment="镜架材质（Acetate, Titanium, TR90, Metal...）")          
+    frame_size = Column(String(20), comment="镜架尺寸（50-20-140 等）")              
     cost_price = Column(Numeric(10, 2), comment="成本价")
     retail_price = Column(Numeric(10, 2), comment="建议零售价")
     launch_date = Column(Date, comment="上市时间")
-    season = Column(String(20), comment="季节（Spring/Summer/AW/Year-round）")
+    season = Column(String(20), comment="季节（Spring/Summer/AW/Year-round）")                  
     is_discount = Column(Boolean, default=False, nullable=False, comment="是否参与促销活动，True为是，False为否")
     
 
@@ -74,10 +74,13 @@ class Order(Base):
     is_shipping_free = Column(Boolean, default=False, nullable=False, comment="是否包邮，True为是，False为否")
     is_reward_points = Column(Boolean, default=False, nullable=False, comment="是否有积分奖励，True为是，False为否")
     is_insurance = Column(Boolean, default=False, nullable=False, comment="是否有保险，True为是，False为否")
+    store_id = Column(Integer,ForeignKey('StoreInfo.store_id'), nullable=False,comment="下单门店ID")
+
     campaign_id = Column(Integer,ForeignKey("PromotionActivity.campaign_id"),nullable=True)
     campaign = relationship("PromotionActivity")
     # 关系映射
     customer = relationship("CustomerInfo")
+    store = relationship("StoreInfo")
     items = relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
     
 class OrderItem(Base):
@@ -120,14 +123,16 @@ class CustomerReview(Base):
     review_id = Column(Integer, primary_key=True, autoincrement=True, comment="评论ID")
     customer_id = Column(Integer, ForeignKey('CustomerInfo.customer_id'), comment="客户ID")
     product_id = Column(Integer, ForeignKey('ProductInfo.product_id'), comment="商品ID")
+    order_id = Column(Integer, ForeignKey('Order.order_id'), nullable=True, comment="关联订单ID（可为空）")
     rating = Column(Integer, CheckConstraint('rating >= 1 AND rating <= 5'), nullable=False, comment="评分（1-5）")
-    review_title = Column(String(100), comment="评论标题")
-    review_text = Column(String(500), comment="评论内容")
+    review_title = Column(Text, comment="评论标题")
+    review_text = Column(Text, comment="评论内容")
     review_date = Column(Date, comment="评论时间")
 
     # 关系映射
     customer = relationship("CustomerInfo")
     product = relationship("ProductInfo")
+    order = relationship("Order")
 
 # 定义 Complaint 表
 class CustomerComplaint(Base):
@@ -135,7 +140,9 @@ class CustomerComplaint(Base):
     complaint_id = Column(Integer, primary_key=True, autoincrement=True, comment="投诉ID")
     customer_id = Column(Integer, ForeignKey('CustomerInfo.customer_id'), comment="客户ID")
     product_id = Column(Integer, ForeignKey('ProductInfo.product_id'), comment="商品ID")
+    order_id = Column(Integer, ForeignKey('Order.order_id'), nullable=True, comment="关联订单ID（可为空）")
     complaint_type = Column(String(50), comment="投诉类型（度数不准、镜架断裂、镜片划痕、物流等）")
+    complaint_text = Column(Text, nullable=False, comment="客户投诉原文")
     complaint_date = Column(Date, comment="投诉时间")
     complaint_severity = Column(String(20), comment="投诉严重程度（Low / Medium / High）")
     resolution_status = Column(String(50), comment="处理结果")
@@ -143,6 +150,7 @@ class CustomerComplaint(Base):
     # 关系映射
     customer = relationship("CustomerInfo")
     product = relationship("ProductInfo")
+    order = relationship("Order")
 
 class StoreInfo(Base):
     __tablename__ = 'StoreInfo'
@@ -153,6 +161,8 @@ class StoreInfo(Base):
     store_country = Column(String(50), comment="门店所在国家")
     store_opening_date = Column(Date, comment="开业日期")
     store_type = Column(String(20), comment="门店类型（直营/加盟）")
+    latitude = Column(Float, comment="门店纬度")
+    longitude = Column(Float, comment="门店经度")
 
 # 定义 CompetitorInfo 表
 class CompetitorInfo(Base):
