@@ -9,7 +9,7 @@
 
 ## 项目结构
 
-```bash
+```Markdown
 0-database-init：数据库与 ORM 表结构初始化、生成和插入模拟/测试数据的脚本集合。
 1-data-collect：原始数据抓取与预处理脚本（从 PDF、文本抓取并标准化）。
 2-data-validate：数据校验与清洗的 Jupyter 笔记本与脚本（按表验证字段、完整性和约束）。
@@ -20,6 +20,7 @@
 7-RAG+LLM：基于检索增强生成（RAG）与 LLM 的问答/报告自动化实验。
 8-promo-effect：促销效果分析（A/B、时间窗口、归因、指标计算）。
 9-review-complaint-overview：评论与投诉的汇总分析、趋势与问题聚类。
+10-data-visualization-by-power-bi：整个项目的Power BI数据分析结果
 ```
 
 ## 各个文件内部的功能特性
@@ -197,16 +198,20 @@
 * 客户评论和投诉文本的（来自hugging face和kaggle）的数据集：具体看6-NLP/dataset_download_url.txt
 
 ## NLP模型选择
+
 * BERT模型选择：cardiffnlp/twitter-roberta-base-sentiment-latest、nlptown/bert-base-multilingual-uncased-sentiment、distilbert-base-uncased-finetuned-sst-2-english
 * 文本编码转换成向量：SentenceTransformer 模型（BAAI_bge_base_en_v15）
 
 ## LLM模型选择
+
 * LLM选择：deepseek-api
 
 ## BERT NLP文本情感分析的解释结果的方案：
+
 LIME、Integrated Gradients + transformers_interpret/Captum
 
 ## 工具与库
+
 * pip包主要使用下面内容：
 
 ```bash
