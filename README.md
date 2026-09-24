@@ -39,10 +39,7 @@
 
 * 目的：从原始文本/PDF/日志抓取并转换为结构化中间文件或 parquet。
 * 关键脚本：
-
   * `data-collect-from-pdf.py`：从 PDF 提取门店/商品/评论文本（需按脚本注释安装依赖，如 pdfplumber）。
-  * `sort_data.py`：对抓取结果排序或合并。
-  * `insert_storecount_headers.py`：生成或插入表头信息（按需要）。
 
 ### 2-data-validate
 
