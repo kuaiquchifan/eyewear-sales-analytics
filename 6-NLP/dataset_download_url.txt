@@ -1,0 +1,9 @@
+1) 下载除了AI glasses外，其他3种产品的review和product_info（下面两者分别是下载meta_Amazon_Fashion.jsonl和Amazon_Fashion.jsonl）
+https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023/tree/main/raw/review_categories
+https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023/tree/main/raw/meta_categories
+
+2) 下载AI glasses 的review数据
+https://www.kaggle.com/datasets/erigor/meta-smart-glasses-reviews
+
+3）下载全部产品的complaints数据
+https://huggingface.co/datasets/hblim/customer-complaints
