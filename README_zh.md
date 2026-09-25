@@ -197,21 +197,30 @@
 * 眼镜产品数据集：从rayban和essilorluxottica官网的公开财报获取。具体看1-data-collect文件夹
 * 客户评论和投诉文本的（来自hugging face和kaggle）的数据集：具体看6-NLP/dataset_download_url.txt
 
-## NLP模型选择
+## 数据集规模
+* 竞争对手: 30个
+* 客户数量：160000个
+* 订单数量：500000条
+* 订单明细数量：738181条
+* 客户投诉数量：8000条
+* 客户评论数量：50000条
+* 产品类别：220种
+* 促销活动数量：27个
+* 店铺数量：101间
+* 时间跨度：2023-01-01~2024-12-31(一共2年)
 
+
+## NLP模型选择
 * BERT模型选择：cardiffnlp/twitter-roberta-base-sentiment-latest、nlptown/bert-base-multilingual-uncased-sentiment、distilbert-base-uncased-finetuned-sst-2-english
 * 文本编码转换成向量：SentenceTransformer 模型（BAAI_bge_base_en_v15）
 
 ## LLM模型选择
-
 * LLM选择：deepseek-api
 
 ## BERT NLP文本情感分析的解释结果的方案：
-
 LIME、Integrated Gradients + transformers_interpret/Captum
 
 ## 工具与库
-
 * pip包主要使用下面内容：
 
 ```bash

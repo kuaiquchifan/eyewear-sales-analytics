@@ -1,6 +1,5 @@
 [![English](https://img.shields.io/badge/README-English-2ea44f?style=for-the-badge)](README.md)
 [![中文](https://img.shields.io/badge/README-中文-ffb703?style=for-the-badge)](README_zh.md)
-
 ## Eyewear Sales Data Analysis (eyewear-data-analysis)
 
 ## Project Overview
@@ -138,14 +137,14 @@ This repository is used for generating eyewear/store sales data, building raw da
 ### 7-RAG+LLM
 
 * Purpose: Build a Retrieval-Augmented Generation (RAG) demonstration and pipeline that leverages a knowledge base (aggregate tables, FAQs, reports, etc.) to provide automated answers and analytical reports—combining retrieval and generation—for business questions.
-* Key Points:
 
+* Key Points:
   * Building the Knowledge Base: Generate document snippets from aggregated tables, reports, clustering results, etc., and index them (embeddings + vector database).
   * Retrieval Strategy: Define chunk size, similarity thresholds, reordering, and recall strategies to ensure retrieval quality.
   * Generation and Prompt Design: Design LLM prompts, control context length and instruction templates; perform deduplication, fact-checking, and credibility filtering on LLM outputs.
   * Test Gradio GUI scripts (`query → retrieve → generate`).
-* Outputs and scripts (corresponding files in the project):
 
+* Outputs and scripts (corresponding files in the project):
   * Knowledge generation:
     * `7-1-generate-product-knowledge.ipynb`: Generates product-attribute, category, and typical sales summary knowledge fragments from product information and sales details.
     * `7-2-generate-customer-cluster-knowledge-v2.ipynb`: Organizes customer clustering results and representative customer personas into retrievable documents (group characteristics, representative customers, behavioral insights).
@@ -181,6 +180,7 @@ This repository is used for generating eyewear/store sales data, building raw da
 * Corresponding file: `9-1-review-overview.ipynb.py`
 * Output: Aggregated review Parquet file, aggregated complaint Parquet file, and intermediate data required for subsequent analysis.
 
+
 ## Environment and Dependencies
 
 * Python 3.11+
@@ -194,17 +194,28 @@ This repository is used for generating eyewear/store sales data, building raw da
 * Eyewear product dataset: Sourced from publicly available financial reports on the Ray-Ban and EssilorLuxottica websites. See the `1-data-collect` folder for details.
 * Dataset of customer reviews and complaints (from Hugging Face and Kaggle): See `6-NLP/dataset_download_url.txt` for details.
 
-## Model Choices
+## Dataset Size
+* Competitors: 30
+* Number of customers: 160,000
+* Number of orders: 500,000
+* Number of order details: 738,181
+* Number of customer complaints: 8,000
+* Number of customer reviews: 50,000
+* Product categories: 220
+* Number of promotional campaigns: 27
+* Number of stores: 101
+* Time frame: January 1, 2023 – December 31, 2024 (2 years total)
 
+
+
+## Model Choices
 * BERT model choices: `cardiffnlp/twitter-roberta-base-sentiment-latest`, `nlptown/bert-base-multilingual-uncased-sentiment`, `distilbert-base-uncased-finetuned-sst-2-english`
 * Text-to-vector embedding model: SentenceTransformer (`BAAI_bge_base_en_v15`)
 
 ## Selecting an LLM Model
-
 * LLM Selection: deepseek-api
 
 ## Approaches for Interpreting BERT NLP Text Sentiment Analysis Results:
-
 LIME, Integrated Gradients + transformers_interpret/Captum
 
 ## Tools and Libraries
@@ -249,7 +260,6 @@ LIME, Integrated Gradients + transformers_interpret/Captum
   ```
 
 ## Deployment Instructions
-
 ### Download the project and open the folder
 
 Download the project and open the folder:
@@ -258,7 +268,6 @@ Download the project and open the folder:
 git clone <repository-url>
 cd eyewear-data-analysis\
 ```
-
 ### Create and activate a virtual environment in miniconda:
 
 ```bash
@@ -267,13 +276,10 @@ conda activate <your-venv-name>
 ```
 
 ### Install dependencies:
-
 ```bash
 pip install -r requirements.txt
 ```
-
 ### Create a PostgreSQL database:
-
 ```SQL
 CREATE DATABASE "eyewear-data"
 OWNER postgres
@@ -291,22 +297,17 @@ python 0-database-init/insert_promotion_activity_data.py
 python 0-database-init/insert_customer_info_data.py
 python 0-database-init/insert_order_data.py
 ```
-
 Then run the notebooks in numeric order from top to bottom.
 
 ### View the Data Visualization Results
-
 After downloading Power BI, view the dashboard results from the `eyewear-data-analysis-dashboard-v3.pbix` file.
 
 ### Run the RAG+LLM program:
-
 First prepare your DeepSeek API key and place it in `api-key.txt`.
 Then execute:
-
 ```bash
 python .\7-RAG+LLM\7-3-retrieval\retrieval-v2-gui-LangChain.py
 ```
-
 Then open the following URL in your browser:
 **http://127.0.0.1:7860**
 
